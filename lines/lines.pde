@@ -6,7 +6,7 @@ int opacity;
 int frameCount;
 
 void setup() {
-  size(640,640,P2D);
+  size(800,640,P2D);
   background(255);
   strokeWeight(1);
   frameRate(1);
