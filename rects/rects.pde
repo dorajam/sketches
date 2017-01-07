@@ -8,7 +8,7 @@ int count;
 int c;
 
 void setup() {
- size(500,500);
+ size(1000, 800);
  background(255);
  strokeWeight(1);
  centerX = int(0.5 * width - 1);
@@ -26,6 +26,12 @@ void draw() {
   stroke(c);
   line(centerX, centerY, random(500), random(500));
   rectangle = createShape(RECT, centerX, centerY, increment, increment);
+  beginShape()
+  line(certerX - increment/2, centerY-increment/2, centerX + increment/2, centerY-increment/2)
+  line(certerX + increment/2, centerY-increment/2, centerX + increment/2, centerY+increment/2)
+  line(certerX - increment/2, centerY-increment/2, centerX - increment/2, centerY+increment/2)
+  line(certerX + increment/2, centerY-increment/2, centerX + increment/2, centerY+increment/2)
+  endShape();
   
   for (int i = shapes.length - 1; i > 0 ; i--) {
     shapes[i] = shapes[i-1];
