@@ -35,40 +35,29 @@ class Grids {
   int y;
   int[] lineX = new int[50];
   int[] lineY = new int[50];
-  int dirX;
-  int dirY;
+  float r,g,b;
 
   Grids() {
     x = width/2;
     y = height/2;
     lineX[0] = x;
     lineY[0] = y;
-    dirX = int(random(-5, 5));
-    dirY = int(random(-5, 5));
+    r = random(255);
+    g = random(255);
+    b = random(255);
 
   }
   void display() {
+    r = random(255);
+    g = random(255);
+    b = random(255);
     noStroke();
-    fill(0,c);
+    fill(r,g,b,c);
     ellipse(x,y,2,2);
   }
   void move() {
     // choose random direction
-    if (dirX > 0 && dirY > 0) {
-      x++;
-      y++;
-    }
-    else if (dirX > 0 && dirY < 0) {
-      x++;
-      y--;
-    }
-    else if (dirX < 0 && dirY < 0) {
-      x--;
-      y++;
-    }
-    else {
-      x--;
-      y--;
-    }
+    x+=random(-10,10);
+    y+=random(-10,10);
   }
 }

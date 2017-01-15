@@ -25,7 +25,7 @@ class Walker {
   }
   void display() {
     stroke(0);
-    ellipse(x,y,5,5);
+    ellipse(x,y,4,4);
   }
   void step() {
    x = map(noise(tx),0,1,0,width);
