@@ -16,17 +16,14 @@ void draw() {
   if (count%7 == 0) {
     particles.add(new Particle(new PVector(width/2, 20)));
   }
-  for (Particle p: particles) {
+  for (int i=particles.size()-1; i > 0 ; i--) {
+    Particle p = particles.get(i);
     p.update();
     p.display();
+    if (p.isDead()) {
+      particles.remove(i);
+    }
   }
-  if (particles.size() > 200) {
-     particles.remove(0); 
-  }
-  
-  //if (p.isDead()) {
-  //  background(255, 0, 0);
-  // }
   count++;
 }
 
