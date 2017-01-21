@@ -1,5 +1,5 @@
 Mover m;
-Mover[] balls = new Mover[100];
+Mover[] balls = new Mover[200];
 
 float xoff, yoff, incX, incY;
 PVector wind;
@@ -8,19 +8,20 @@ void setup() {
   size(640,360);
   background(255);
   for (int i = 0; i < balls.length; i++) {
-    balls[i] = new Mover(random(0.1,5), 0, 0);
+    balls[i] = new Mover(random(0.2,5), width/2, 20);
   }
   
   xoff = 0;
-  yoff = 0;
+  yoff = 10000;
+  incX = 0.001;
 }
  
 void draw() {
-  background(255);
-  PVector wind = new PVector(0.01, 0);
-  PVector gravity = new PVector(0,0.1);
-  
+  background(255);  
   for (int i = 0; i < balls.length; i++) {
+    float m = balls[i].mass;
+    PVector gravity = new PVector(0, 0.001*pow(m,4));
+    PVector wind = new PVector(noise(xoff)*0.001, noise(yoff)*0.001);
     balls[i].applyForce(wind);
     balls[i].applyForce(gravity);
     balls[i].checkEdges();
@@ -28,14 +29,13 @@ void draw() {
     balls[i].display();
   }
   xoff+= incX;
-  yoff+= incY;
+  yoff+= incX;
 }
 
 class Mover {
   PVector loc;
   PVector vel;
   PVector acc;
-  float topspeed;
   float r,g,b;
   float mass;
   
@@ -44,16 +44,14 @@ class Mover {
     loc = new PVector(x, y); 
     vel = new PVector(0,0);
     acc = new PVector(0,0);
-    topspeed = 5;
-    r = random(200,255);
-    g = random(255);
-    b = random(255);
+    r = random(200, 255);
+    g = random(150, 255);
+    b = random(200, 255);
   }
   void update() {
     acc.x=noise(xoff)*0.1;
     acc.y-=incX;
     vel.add(acc);
-    vel.limit(topspeed);
     loc.add(vel);
     acc.mult(0);
   }

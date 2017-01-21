@@ -1,35 +1,33 @@
 Mover m;
-Mover[] balls = new Mover[100];
-
 float xoff, yoff, incX, incY;
 PVector wind;
 
 void setup() {
   size(640,360);
   background(255);
-  for (int i = 0; i < balls.length; i++) {
-    balls[i] = new Mover(random(0.1,5), 0, 0);
-  }
-  
+  m = new Mover();
   xoff = 0;
   yoff = 0;
+  incX = 0.001;
+  incY = 0.001;
+  wind = new PVector(0.001,-0.002);
 }
  
 void draw() {
   background(255);
-  PVector wind = new PVector(0.01, 0);
-  PVector gravity = new PVector(0,0.1);
+  wind.x = noise(xoff, yoff);
+  wind.y =  noise(yoff, xoff);
+  //m.applyForce(wind);
   
-  for (int i = 0; i < balls.length; i++) {
-    balls[i].applyForce(wind);
-    balls[i].applyForce(gravity);
-    balls[i].checkEdges();
-    balls[i].update();
-    balls[i].display();
-  }
+  m.checkEdges();
+  m.update();
+  m.display();
+ 
   xoff+= incX;
   yoff+= incY;
 }
+
+
 
 class Mover {
   PVector loc;
@@ -37,11 +35,11 @@ class Mover {
   PVector acc;
   float topspeed;
   float r,g,b;
-  float mass;
+  int size = 50;
+  float mass = 10.0;
   
-  Mover(float m, float x, float y) {
-    mass = m;
-    loc = new PVector(x, y); 
+  Mover() {
+    loc = new PVector(random(width), height-100); 
     vel = new PVector(0,0);
     acc = new PVector(0,0);
     topspeed = 5;
@@ -55,18 +53,19 @@ class Mover {
     vel.add(acc);
     vel.limit(topspeed);
     loc.add(vel);
-    acc.mult(0);
   }
   void applyForce(PVector force) {
-     PVector f = PVector.div(force, mass);
-     acc.add(f);
+     PVector f = force.get();
+     f.div(mass);
+     acc.add(force);
   }
   void display() {
     stroke(0, 40);
     fill(color(r,g,b), 80);
-    ellipse(loc.x, loc.y, mass*16, mass*16);
+    ellipse(loc.x, loc.y, size, size);
   }
   void checkEdges() {
+   println(loc.x,loc.y);
    if (loc.x > width) {
       vel.x = vel.x * -1;
       loc.x = width;
