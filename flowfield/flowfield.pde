@@ -49,9 +49,9 @@ void draw() {
     zoff+=0.0003;
   }
   for (int i=0; i < particles.length; i++) { 
-    particles[i].edges();
     particles[i].follow(flowfield);
     particles[i].update();
+    particles[i].edges();
     particles[i].display();
   }
 }
@@ -94,12 +94,12 @@ class Particle {
    if (loc.x > width) {
      loc.x = 0;
    } else if (loc.x < 0) {
-     loc.x = width;
+     loc.x = width-1;
    }
    if (loc.y > height) {
      loc.y = 0;
    } else if (loc.y < 0) {
-     loc.y = height;
+     loc.y = height-1;
    }
   }
   void follow(PVector[] vectors) {
