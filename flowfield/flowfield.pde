@@ -10,7 +10,7 @@ PVector[] flowfield;
 void setup() {
   size(1200, 1000);
   background(255);
-  frameRate(100);
+  frameRate(30);
   cols = width / scl;
   rows = height / scl;
   flowfield = new PVector[cols*rows];
