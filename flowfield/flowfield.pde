@@ -10,7 +10,7 @@ PVector[] flowfield;
 void setup() {
   size(1200, 1000);
   background(255);
-  frameRate(30);
+  frameRate(100);
   cols = width / scl;
   rows = height / scl;
   flowfield = new PVector[cols*rows];
@@ -67,7 +67,7 @@ class Particle {
     loc = new PVector(x_, y_);
     acc = new PVector(0, 0);
     vel = new PVector(0,0);
-    maxspeed = 2;
+    maxspeed = 6;
     
     prevPos = loc;
   }
