@@ -67,7 +67,7 @@ class Particle {
     loc = new PVector(x_, y_);
     acc = new PVector(0, 0);
     vel = new PVector(0,0);
-    maxspeed = 6;
+    maxspeed = 2;
     
     prevPos = loc;
   }
