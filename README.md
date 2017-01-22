@@ -8,7 +8,7 @@ __inspiration__: https://www.openprocessing.org/
 __resources__: Nature of Code by Dan Shiffman ([here](http://natureofcode.com/book/))
 
 
-Example flowfield sketch:
+Example flowfield sketch (live demo [here](https://dorajam.github.io/sketches/flowfield/flowfield.html)):
 <p align="center">
   <img src="flowfield/Screen Shot 2017-01-22 at 11.11.09 2.png" alt="Flowfield" width="450">
 </p>
