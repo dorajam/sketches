@@ -17,7 +17,7 @@ void setup() {
   xoff = 0;
   zoff = 0;
   yoff = 10000;
-  inc = 0.01;
+  inc = 0.1;
   
   for (int i=0; i < particles.length; i++) {
    particles[i] = new Particle(random(width), random(height));
@@ -42,14 +42,15 @@ void draw() {
       //rotate(v.heading());
       //strokeWeight(1);
       //line(0,0, scl, 0);
-      //popMatrix();    
+      //popMatrix();
+      
     }
     yoff+=inc;
     zoff+=0.0003;
   }
   for (int i=0; i < particles.length; i++) { 
-    particles[i].follow(flowfield);
     particles[i].edges();
+    particles[i].follow(flowfield);
     particles[i].update();
     particles[i].display();
   }
@@ -65,8 +66,9 @@ class Particle {
   Particle(float x_, float y_) {
     loc = new PVector(x_, y_);
     acc = new PVector(0, 0);
-    vel = new PVector(0, 0);
+    vel = new PVector(0,0);
     maxspeed = 2;
+    
     prevPos = loc;
   }
   void update() {
@@ -74,6 +76,7 @@ class Particle {
     vel.limit(maxspeed);
     loc.add(vel);
     acc.mult(0);
+    updatePrevpos();
   }
   void updatePrevpos() {
     prevPos.x = loc.x; 
@@ -86,30 +89,23 @@ class Particle {
     stroke(0, 10);
     strokeWeight(1);
     line(loc.x, loc.y, prevPos.x, prevPos.y);
-    updatePrevpos();
   }
   void edges() {
    if (loc.x > width) {
      loc.x = 0;
-     updatePrevpos();
    } else if (loc.x < 0) {
      loc.x = width;
-     updatePrevpos();
    }
    if (loc.y > height) {
      loc.y = 0;
-     updatePrevpos();
    } else if (loc.y < 0) {
      loc.y = height;
-     updatePrevpos();
    }
   }
   void follow(PVector[] vectors) {
-   int i = floor(loc.x / scl);
-   int j = floor(loc.y / scl);
-   int idx = i + j * cols;
-   
-   println(idx, i, j, vectors.length);
+   int x = floor(loc.x / scl);
+   int y = floor(loc.y / scl);
+   int idx = x + y * cols;
    PVector force = vectors[idx];
    applyForce(force);
   }
