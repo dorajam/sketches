@@ -5,4 +5,11 @@ The main idea is to to get comfortable enough to support some of my project idea
 Everything is done in Processing -> (with Processing.js to visualize my sketches in the browser.)
 
 __inspiration__: https://www.openprocessing.org/    
-__resources__: Nature of Code by Dan Shiffman ([here](http://natureofcode.com/book/)), 
+__resources__: Nature of Code by Dan Shiffman ([here](http://natureofcode.com/book/))
+
+
+Example flowfield sketch:
+<p align="center">
+  <img src="flowfield/Screen Shot 2017-01-22 at 11.11.09 2.png" alt="Flowfield" width="450">
+</p>
+
