@@ -1,54 +1,116 @@
+PVector v;
 Particle p;
-ArrayList<Particle> particles;
+Particle[] particles = new Particle[200];
+int scl = 20;
+int cols, rows;
+float xoff, yoff, zoff, inc;
+
+PVector[] flowfield;
 
 void setup() {
-  size(740,360);
-  p = new Particle(new PVector(width/2, 20));
-  particles = new ArrayList<Particle>();
-  for (int i=0; i < 10; i++) {
-    particles.add(new Particle(new PVector(width/2, 20)));
+  size(600, 600);
+  background(255);
+  frameRate(30);
+  cols = width / scl;
+  rows = height / scl;
+  flowfield = new PVector[cols*rows];
+  xoff = 0;
+  zoff = 0;
+  yoff = 10000;
+  inc = 0.01;
+  
+  for (int i=0; i < particles.length; i++) {
+   particles[i] = new Particle(random(width), random(height));
   }
 }
-void draw() {
-  background(255);
-  for (Particle p: particles) {
-    p.update();
-    p.display();
-  }
 
-  
-  if (p.isDead()) {
-    background(255, 0, 0);
-   }
+void draw() {
+  yoff = 0;
+  for (int j=0; j < rows; j++) {
+    xoff = 0;
+    for (int i=0; i < cols; i++) {
+      float angle = noise(xoff, yoff, zoff) * TWO_PI*4;
+      v = PVector.fromAngle(angle);
+      v.setMag(0.5);
+      int idx = i + j * cols;
+      flowfield[idx] = v;
+      xoff+=inc;
+      
+      stroke(0, 50);
+      //pushMatrix();
+      //translate(i*scl, j*scl);
+      //rotate(v.heading());
+      //strokeWeight(1);
+      //line(0,0, scl, 0);
+      //popMatrix();    
+    }
+    yoff+=inc;
+    zoff+=0.0003;
+  }
+  for (int i=0; i < particles.length; i++) { 
+    particles[i].follow(flowfield);
+    particles[i].edges();
+    particles[i].update();
+    particles[i].display();
+  }
 }
 
 class Particle {
   PVector loc;
   PVector acc;
   PVector vel;
-  float lifeSpan = 200;
+  PVector prevPos;
+  float maxspeed;
 
-  Particle(PVector l) {
-    acc = new PVector(0, 0.005);
-    vel = new PVector(random(-1,1), random(-1,1));
-    loc = l.get();
+  Particle(float x_, float y_) {
+    loc = new PVector(x_, y_);
+    acc = new PVector(0, 0);
+    vel = new PVector(0, 0);
+    maxspeed = 2;
+    prevPos = loc;
   }
   void update() {
     vel.add(acc);
+    vel.limit(maxspeed);
     loc.add(vel);
-    lifeSpan -= 2;
+    acc.mult(0);
+  }
+  void updatePrevpos() {
+    prevPos.x = loc.x; 
+    prevPos.y = loc.y; 
+  }
+  void applyForce(PVector force) {
+    acc.add(force); 
   }
   void display() {
-    stroke(0, lifeSpan);
-    strokeWeight(2);
-    fill(127);
-    ellipse(loc.x, loc.y, 12, 12); 
+    stroke(0, 10);
+    strokeWeight(1);
+    line(loc.x, loc.y, prevPos.x, prevPos.y);
+    updatePrevpos();
   }
-  boolean isDead() {
-    if (lifeSpan <= 0) {
-      return true;
-    } else {
-      return false;
-    }
+  void edges() {
+   if (loc.x > width) {
+     loc.x = 0;
+     updatePrevpos();
+   } else if (loc.x < 0) {
+     loc.x = width;
+     updatePrevpos();
+   }
+   if (loc.y > height) {
+     loc.y = 0;
+     updatePrevpos();
+   } else if (loc.y < 0) {
+     loc.y = height;
+     updatePrevpos();
+   }
+  }
+  void follow(PVector[] vectors) {
+   int i = floor(loc.x / scl);
+   int j = floor(loc.y / scl);
+   int idx = i + j * cols;
+   
+   println(idx, i, j, vectors.length);
+   PVector force = vectors[idx];
+   applyForce(force);
   }
 }

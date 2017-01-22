@@ -1,6 +1,6 @@
 Mover m;
 Liquid liquid;
-Mover[] balls = new Mover[2];
+Mover[] balls = new Mover[30];
 
 float xoff, yoff, incX, incY;
 PVector wind;
@@ -8,10 +8,10 @@ PVector wind;
 void setup() {
   size(640,360);
   background(255);
-  liquid = new Liquid(0,height*0.6, width, height*0.6, 0.01);
+  liquid = new Liquid(0,height*0.6, width, height*0.6, 0.1);
   
   for (int i = 0; i < balls.length; i++) {
-    balls[i] = new Mover(random(0.2,5), width/2, 20);
+    balls[i] = new Mover(random(0.2,5), random(width), 20);
   }
   
   xoff = 0;
@@ -29,7 +29,7 @@ void draw() {
     }
     
     float m = balls[i].mass;
-    PVector gravity = new PVector(0, 0.001*pow(m,4));
+    PVector gravity = new PVector(0, 0.006*pow(m,2));
     PVector wind = new PVector(noise(xoff)*0.001, noise(yoff)*0.001);
     balls[i].applyForce(wind);
     balls[i].applyForce(gravity);
@@ -54,8 +54,8 @@ class Mover {
     vel = new PVector(0,0);
     acc = new PVector(0,0);
     r = random(200, 255);
-    g = random(150, 255);
-    b = random(200, 255);
+    g = random(0, 100);
+    b = random(0, 100);
   }
   void update() {
     acc.x=random(-1,1)*0.01;
@@ -69,7 +69,7 @@ class Mover {
   }
   void display() {
     stroke(0, 40);
-    fill(color(r,g,b), 80);
+    fill(color(r,g,b), 100);
     ellipse(loc.x, loc.y, mass*16, mass*16);
   }
   void checkEdges() {
@@ -88,7 +88,7 @@ class Mover {
       loc.y = 0;
     }
   }
-  boolean isInside(Liquid l) {
+  boolean inLiquid(Liquid l) {
    if (loc.x > l.x && loc.x < l.x+l.w && loc.y > l.y && loc.y < l.y + l.h) {
     return true;
    } 
